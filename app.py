@@ -1,11 +1,20 @@
-from flask import Flask, render_template, request, redirect,abort
+from flask import Flask, render_template, request, redirect,abort,flash
 from textblob import TextBlob
 from spellchecker import SpellChecker
 import re
+import getpass
 import os
 
+
+
+username = getpass.getuser()
+UPLOAD_FOLDER = 'C:/Users/'+username+'/Desktop'
+
+print(UPLOAD_FOLDER)
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['UPLOAD_EXTENSIONS'] = ['.txt']
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -14,23 +23,28 @@ def index():
     list1=[]
     list2=[]
     misspelled=[]
+    error=""
     if request.method == "POST":
         print("FORM DATA RECEIVED")
-        #print("Type :",type(request.files))
-        #print("Files :",request.files)
+
         if "file" not in request.files:
+            flash('No file part')
             return redirect(request.url)
 
         file = request.files["file"]
         if file.filename == "":
+            flash('No selected file')
             return redirect(request.url)
         if file.filename != '':
             file_ext = os.path.splitext(file.filename)[1]
             if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-                print("Please upload a file type of .txt only")
-                return abort(404)
+                print("Please upload a .txt file type only")
+                return abort(400)
+
         if file:
-            f = open(file.filename,"r+")
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+            print('C:/Users/'+username+'/Desktop/'+file.filename)
+            f = open('C:/Users/'+username+'/Desktop/'+file.filename,"r+")
             filecontent=f.read()
             a= str(filecontent)
             b = TextBlob(a)
