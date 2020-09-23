@@ -1,0 +1,5 @@
+Flask==1.1.1
+gunicorn==20.0.4
+textblob==0.15.3
+pyspellchecker==0.5.5
+regex==2020.7.14

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Spelling Correction App</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+
+</head>
+<body class="maincon">
+
+	<header>
+		<div class="jumbotron text-center">
+		<h1>Spelling Correction with Flask</h1>
+		<p class="text-muted font-weight-bold">Correct your Spelling Mistakes using this simple App</p>
+		</div>
+	</header>
+
+	<div class="container p-3 my-3 text-white text-justify" >
+		<div class="row">
+		<div class="col-xl-12">
+		<div class="form-group">
+			<h2> </h2>
+			<form method="post" enctype="multipart/form-data">
+				<p class="font-weight-bold">Upload a text(.txt) file which needs to be corrected :</p>
+				<input type="file" name="file"/><br><br>
+				<input type="submit" class="btn btn-primary font-weight-bold text-white" value="Correct Spellings"/>
+			</form>
+		</div>	
+		</div>	
+		</div>
+		<br>
+		{% if correct != "" %}
+		<div>
+			<h2>Text to be corrected :</h2>
+			<p class=" font-italic lead text-justify">{{ a }}</p>
+			<h2>Corrected Text :</h2>
+            <p class=" font-italic lead text-justify">{{ correct }}</p>
+        </div>
+		<br>
+		<div>
+			<h3>List of possibly misspelled words :</h3>
+			<ol>
+			{% for i in range(0, len) %}
+    		<li class="list-group-item list-group-item-action">{{misspelled[i]}}</li>
+			{% endfor %}
+			</ol>
+		</div>
+		<br>
+		<div class="table-responsive-md">
+			<h3>Correct and Candidate words for misspelled words :</h3>
+			<table class="table table-striped">
+				<thead class="thead-dark">
+				<tr>
+					<th>Correct Word </th>
+					<th>Candidate Words </th>
+				</tr>
+				</thead>
+
+				<tbody>
+				{% for j in range(0, len1) %}
+				<tr>
+    				<td class="text-white">{{list1[j]}}</td>
+    				<td class="text-white">{{list2[j]}}</td>
+				{% endfor %}
+				</tr>
+				</tbody>
+
+			</table>
+
+		</div>
+		{% endif %}
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	
+</body>
+</html>
+
